@@ -29,13 +29,9 @@ RoseTV 是一款 Windows 桌面影视播放器，**基于 [LibreTV](https://gith
 
 ## 获取与启动
 
-**当前仓库提供源码、构建脚本和必要构建资产，尚未发布包含 Python 运行时的独立安装包。** GitHub 的“Download ZIP”下载的是源码。
+**当前 GitHub 仓库不包含 EXE，也尚未发布独立安装包。** “Download ZIP”下载的是源码，下载后在 `App/` 中找不到 `RoseTV.exe`；该目录目前仅包含许可证文件。
 
-| 拿到的文件 | 使用方式 |
-| --- | --- |
-| 已配置好的完整程序目录 | 双击 `App/RoseTV.exe`，保留整个目录及运行依赖 |
-| 本仓库源码 | 按下方步骤安装依赖、构建并启动 |
-| 单独一个 `RoseTV.exe` | 它是启动器，缺少本地服务、桌面窗口和运行依赖时无法独立运行 |
+需要先按下方步骤构建：程序生成在 `build/RoseTV.exe` 和 `build/rosetv-native.exe`。将这两个文件复制到 `App/` 后，才可以双击 `App/RoseTV.exe` 启动。请保留源码目录及 Python 运行依赖，单独复制启动器无法运行。
 
 当前验证平台为 Windows x64，桌面窗口使用 Microsoft Edge WebView2。需要登录的网站通过独立 Chrome / Edge 类浏览器档案连接。
 
