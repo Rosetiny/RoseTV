@@ -446,7 +446,7 @@ class BridgeChecks(unittest.TestCase):
         import tempfile
         from pathlib import Path
         with tempfile.TemporaryDirectory() as directory:
-            root=Path(directory);old=root/'old';new=root/'new';old.mkdir();new.mkdir()
+            root=Path(directory).resolve();old=root/'old';new=root/'new';old.mkdir();new.mkdir()
             (old/'.rosetv-cache').write_text('owned');(new/'.rosetv-cache').write_text('owned')
             (old/'Network').mkdir();(old/'Network/a').write_text('cached')
             (old/'keep.txt').write_text('retain');snapshot=old/'catalog-cache.json.gz';snapshot.write_bytes(b'public cache')
@@ -468,7 +468,7 @@ class BridgeChecks(unittest.TestCase):
         from pathlib import Path
         from unittest.mock import Mock
         with tempfile.TemporaryDirectory() as directory:
-            root=Path(directory);config={'key':'test'}
+            root=Path(directory).resolve();config={'key':'test'}
             result=Mock(returncode=0,stdout=base64.b64encode(str(root).encode()))
             with patch.object(bridge,'CONFIG',config),patch.object(bridge,'CONFIG_FILE',root/'config.json'),patch.object(bridge.subprocess,'run',return_value=result):
                 status=bridge.choose_cache_directory()
