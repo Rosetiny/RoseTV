@@ -753,7 +753,8 @@ def storage_status():
             if group:account_sizes[group]+=amount
     with LOCK:
         combined={**PUBLIC_RECORDS,**CACHE};metadata_bytes=sum(item[2] for item in combined.values());metadata_entries=len(combined)
-    application_bytes=size(ROOT/'App')+sum(path.stat().st_size for path in (ROOT/'tools').glob('*.py'))
+    application_bytes=sum(size(ROOT/folder) for folder in ('App','runtime','vendor','source/public','tools/__pycache__'))+sum(path.stat().st_size for path in (ROOT/'tools').glob('*.py'))
+    if (ROOT/'RoseTV.exe').is_file():application_bytes+=(ROOT/'RoseTV.exe').stat().st_size
     profile_bytes=size(profile)+external_network
     snapshot_bytes=PUBLIC_CACHE_FILE.stat().st_size if PUBLIC_CACHE_FILE.exists() else 0
     configuration_bytes=sum(path.stat().st_size for path in (CONFIG_FILE,SESSION_FILE) if path.exists())

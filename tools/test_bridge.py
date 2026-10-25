@@ -480,6 +480,8 @@ class BridgeChecks(unittest.TestCase):
         from pathlib import Path
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory);(root/'App').mkdir();(root/'App/app.exe').write_bytes(b'12345')
+            for name,amount in [('runtime/python-runtime.zip',10),('runtime/python/python.exe',20),('vendor/base.br',4),('source/public/js/app.js',8),('RoseTV.exe',3)]:
+                path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(b'x'*amount)
             (root/'backup').write_bytes(b'x'*100)
             profile=root/'AppData/Local/com.rosetv.app/EBWebView/Default/Cache'
             profile.mkdir(parents=True);(profile/'item').write_bytes(b'1234567')
@@ -488,7 +490,7 @@ class BridgeChecks(unittest.TestCase):
                 path=account/folder;path.mkdir(parents=True);(path/'item').write_bytes(b'x'*amount)
             with patch.object(bridge, 'ROOT', root), patch.object(bridge.Path, 'home', return_value=root),patch.object(bridge,'CONFIG',{}),patch.object(bridge.site_session,'LOGIN_DATA',account):
                 status=bridge.storage_status()
-            self.assertEqual(status['applicationBytes'],5)
+            self.assertEqual(status['applicationBytes'],50)
             self.assertEqual(status['profileBytes'],7)
             self.assertEqual(status['browserCacheBytes'],7)
             self.assertEqual(status['accountBrowserBytes'],41)
