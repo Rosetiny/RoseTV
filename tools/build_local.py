@@ -13,7 +13,15 @@ ROOT = Path(__file__).resolve().parent.parent
 BACKUP = ROOT / 'backups' / '20261022-performance'
 ORIGINAL_HASH = '52980511d53d34cedb723afe2fec0a73f9bf615928f4baffc93612d58c821f86'
 
-def build():
+def frontend_signature(key):
+    digest=hashlib.sha256(key.encode())
+    digest.update(Path(__file__).read_bytes())
+    for path in sorted((ROOT/'source/public/js').glob('*.js')):
+        if path.name!='rosetv.js':digest.update(path.name.encode());digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+def build(compile_launcher=True):
     original = (BACKUP / 'app.exe').read_bytes() if (BACKUP/'app.exe').is_file() else brotli.decompress((ROOT/'vendor/rosetv-native-base.br').read_bytes())
     if hashlib.sha256(original).hexdigest() != ORIGINAL_HASH:
         raise ValueError('The original executable does not match the verified backup')
@@ -78,12 +86,15 @@ def build():
     (build_directory / 'rosetv-native.exe').write_bytes(result)
     (build_directory / 'frontend-manifest.json').write_text(json.dumps({
         'originalSHA256': ORIGINAL_HASH, 'updatedSHA256': hashlib.sha256(result).hexdigest(),
+        'frontendSignature': frontend_signature(key),
         'nativeCodeUnchanged': True, 'assets': changes,
         'localAssets': [{'file': str(path.relative_to(ROOT)), 'SHA256': hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in [ROOT/'source/public/js/rosetv.js',ROOT/'source/public/css/rosetv.css']]}, indent=2), encoding='utf-8')
-    compiler=Path(os.environ.get('WINDIR','C:/Windows'))/'Microsoft.NET/Framework64/v4.0.30319/csc.exe'
-    subprocess.run([str(compiler),'/nologo','/target:winexe','/reference:System.Windows.Forms.dll',
-        '/out:'+str(build_directory/'RoseTV.exe'),str(ROOT/'tools/Launcher.cs')],check=True)
+    if compile_launcher:
+        compiler=Path(os.environ.get('WINDIR','C:/Windows'))/'Microsoft.NET/Framework64/v4.0.30319/csc.exe'
+        subprocess.run([str(compiler),'/nologo','/target:winexe','/reference:System.Windows.Forms.dll',
+            '/reference:System.IO.Compression.FileSystem.dll','/reference:System.IO.Compression.dll',
+            '/out:'+str(build_directory/'RoseTV.exe'),str(ROOT/'tools/Launcher.cs')],check=True)
     local_python=Path(sys.executable).with_name('pythonw.exe')
     if local_python.is_file():(ROOT/'tools/python-path.txt').write_text(str(local_python),encoding='utf-8')
     print('Verified frontend assets updated:', len(changes))

@@ -4,6 +4,9 @@ tools/provider-session.bin
 tools/provider-browser/
 tools/*-profile/
 tools/python-path.txt
+runtime/python/
+runtime/.extract-*/
+tools/startup-error.log
 tools/catalog-cache.json.gz
 tools/*-checks.json
 tools/*-process.json

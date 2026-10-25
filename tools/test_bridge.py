@@ -16,7 +16,7 @@ class BridgeChecks(unittest.TestCase):
             context.start();self.addCleanup(context.stop)
 
     def test_session_requires_explicit_authorization(self):
-        with patch.object(bridge, 'site_enabled', return_value=False):
+        with patch.object(bridge, 'configuration', return_value={'siteSessionAuthorized':False}), patch.object(bridge.site_session,'has_session',return_value=True):
             with self.assertRaises(PermissionError):
                 bridge.site_client()
 

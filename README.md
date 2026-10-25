@@ -29,33 +29,49 @@ RoseTV 是一款 Windows 桌面影视播放器，**基于 [LibreTV](https://gith
 
 ## 获取与启动
 
-**当前 GitHub 仓库不包含 EXE，也尚未发布独立安装包。** “Download ZIP”下载的是源码，下载后在 `App/` 中找不到 `RoseTV.exe`；该目录目前仅包含许可证文件。
+**下载或克隆仓库后，双击根目录的 `RoseTV.exe` 即可使用。** 源码和 Windows x64 运行环境一并提供，无需安装 Python、Node.js 或 Rust，也无需手动构建。
 
-需要先按下方步骤构建：程序生成在 `build/RoseTV.exe` 和 `build/rosetv-native.exe`。将这两个文件复制到 `App/` 后，才可以双击 `App/RoseTV.exe` 启动。请保留源码目录及 Python 运行依赖，单独复制启动器无法运行。
+### 方法一：下载 ZIP 后直接使用
 
-当前验证平台为 Windows x64，桌面窗口使用 Microsoft Edge WebView2。需要登录的网站通过独立 Chrome / Edge 类浏览器档案连接。
+1. 点击绿色“Code → Download ZIP”，或直接[下载完整项目 ZIP](https://github.com/Rosetiny/RoseTV/archive/refs/heads/main.zip)。
+2. 右键 ZIP，选择“全部解压缩”，解压到自己可写的文件夹。不要在压缩包内直接运行，也不要只提取 EXE。
+3. 打开解压得到的 `RoseTV-main`，确认 `RoseTV.exe` 与 `source/`、`tools/`、`runtime/`、`vendor/` 位于同一层。
+4. 双击这一层的 **`RoseTV.exe`**。首次启动自动校验、解压运行环境，准备桌面文件并生成自己的本机密钥；等待窗口出现即可。后续启动复用已准备的文件。
+5. 在顶部选择电影、剧集等分类，或搜索影片。需要调整来源时，进入“设置 → 播放来源”，按下方说明操作。公开 API 不要求登录教父网站。
 
-### 从源码运行
+下载后的入口位置：
 
-需要 Windows、Python 3.9+；Node.js 用于前端检查。构建使用 Windows .NET Framework 的 C# 编译器。
+```text
+RoseTV-main/
+├─ RoseTV.exe                 ← 双击这里
+├─ runtime/python-runtime.zip ← 随附运行环境，保留即可
+├─ source/                    ← 可修改的源码
+├─ tools/                     ← 启动和本地服务
+├─ vendor/                    ← 已校验的桌面基底
+└─ App/                       ← 首次启动后自动准备桌面文件
+```
+
+适用于 Windows 10 / 11 x64。桌面显示依赖 Microsoft Edge WebView2，多数系统已具备；若提示缺少 WebView2，可安装 [Microsoft 官方 WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/consumer/)，再打开 `RoseTV.exe`。影视浏览和播放需要联网，运行环境首次准备不需要另行联网下载。
+
+### 方法二：克隆源码后直接使用
+
+已安装 Git 时，在 PowerShell 中运行：
 
 ```powershell
 git clone https://github.com/Rosetiny/RoseTV.git
 cd RoseTV
-python -m pip install -r requirements.txt
-python tools/build_local.py
-Copy-Item build/RoseTV.exe App/RoseTV.exe -Force
-Copy-Item build/rosetv-native.exe App/rosetv-native.exe -Force
-.\App\RoseTV.exe
+.\RoseTV.exe
 ```
 
-首次构建会生成自己的本机配置和服务密钥。没有本机备份时，脚本从 `vendor/rosetv-native-base.br` 读取经过哈希校验的原生基底。
+克隆目录与 ZIP 方式包含相同的启动器、源码和运行环境，也可以从资源管理器双击根目录 `RoseTV.exe`。
 
-启动器依次寻找 `runtime/pythonw.exe`、`ROSETV_PYTHON` 环境变量指定的解释器、`tools/python-path.txt` 中的本机解释器，最后尝试 PATH 中的 `pythonw.exe`。构建时会写入当前本机解释器位置。
+### 启动、更新与分享
 
-### 发给朋友使用
-
-上传 GitHub 不是运行软件的前提。发成品时，需要完整运行目录及经过验证的 Python 运行时，接收者解压后再打开启动器。**不要直接复制自己用过的运行目录发布**：其中可能已有本机密钥、登录资料、收藏和观看记录。详见 [构建与分发](docs/构建与分发.md)。
+- 始终使用根目录 `RoseTV.exe`，首次启动无需寻找 `App/` 中的文件。
+- 如果提示另一个目录的 RoseTV 正在运行，先关闭原窗口，再打开这一份。
+- 更新源码前先关闭软件。修改嵌入的 JavaScript 后，下次启动自动更新桌面文件；修改主界面 `rosetv.js`、`rosetv.css` 后重启即可。
+- 发给朋友时，发送从仓库下载的干净完整 ZIP。对方全部解压后双击根目录启动器；不要单发 EXE，也不要把自己用过的目录直接打包，避免带上账号、密钥和使用记录。
+- 不同用户首次启动各自生成密钥和浏览器档案，需要登录的网站分别登录。详见 [构建与分发](docs/构建与分发.md)。
 
 ## API 与自定义来源配置
 
@@ -159,15 +175,22 @@ Copy-Item build/rosetv-native.exe App/rosetv-native.exe -Force
 | `tools/test_*.py`、`source/tests/` | 离线回归检查 |
 | `vendor/` | 已核验的压缩原生构建基底及说明 |
 
-修改后运行：
+修改前先运行一次根目录 `RoseTV.exe`，随附运行环境会自动解压。之后可以直接编辑源码：
+
+1. 关闭 RoseTV，修改上表对应文件。
+2. 再次双击根目录 `RoseTV.exe`；JavaScript 嵌入资源会自动检查并准备，无需自己执行构建命令。
+3. `rosetv.js` 和 `rosetv.css` 由本地服务读取，重启即可使用改动。
+4. 修改 C# 启动器时，运行下列构建命令，再把 `build/RoseTV.exe` 复制到根目录。Rust / Tauri 原生代码的修改需要相应开发工具链，当前自动准备流程只更新前端资源。
+
+使用随附 Python 运行离线检查和启动器构建：
 
 ```powershell
-python -m unittest discover -s tools -p "test_*.py" -q
-node source/tests/performance.mjs
-python tools/build_local.py
+.\runtime\python\python.exe -m unittest discover -s tools -p "test_*.py" -q
+.\runtime\python\python.exe tools/build_local.py
+Copy-Item build/RoseTV.exe RoseTV.exe -Force
 ```
 
-关闭软件后，将 `build/` 中两个 EXE 复制到 `App/`。通过本地服务加载的 `rosetv.js`、`rosetv.css` 修改后重启即可，其他嵌入资源需要重新构建。正式运行不启用调试端口。
+前端回归检查另需安装 Node.js，运行 `node source/tests/performance.mjs`；这只用于开发检查，普通使用无需安装。重制运行环境包见 [构建与分发](docs/构建与分发.md)。正式运行不启用调试端口。
 
 GitHub Actions 执行离线检查和 Windows 构建，不向影片网站做压力测试。反馈问题时请附复现步骤和错误提示，上传截图、日志前先检查是否含私人地址、账号或历史记录。
 
