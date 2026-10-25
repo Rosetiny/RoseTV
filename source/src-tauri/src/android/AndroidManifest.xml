@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 如果您的应用需要其他权限，请在此处添加 -->
+
+    <application
+        android:usesCleartextTraffic="true"
+        android:theme="@style/AppTheme"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher">
+        <!-- 
+        Tauri 会自动处理 MainActivity 的声明，
+        或者您在 MainActivity.kt 中已经有了 TauriActivity 的基类。
+        确保 android:theme="@style/AppTheme" 应用于您的主 Activity。
+        如果 Tauri 的默认 Activity 声明与此冲突或需要调整，
+        您可能需要更精确地覆盖 Activity 声明部分，
+        但这通常由 Tauri 的构建过程处理，只要主题设置正确。
+        -->
+        <!-- 
+        <activity
+            android:name=".MainActivity" 
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        -->
+    </application>
+</manifest>

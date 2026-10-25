@@ -1,0 +1,12 @@
+{
+  "current": "https://www.xn--wcv59z.com",
+  "backups": [
+    {
+      "origin": "https://www.xn--kivn76b41nnhi.com",
+      "name": "星际穿越.com",
+      "verified": "2026-10-23",
+      "anonymousPublicCatalog": "passed"
+    }
+  ],
+  "policy": "Use saved origin on startup; update verified HTTPS redirects; try one anonymous backup only after network failure; never copy account cookies across domains; stop for 15 minutes on rate limiting or verification."
+}

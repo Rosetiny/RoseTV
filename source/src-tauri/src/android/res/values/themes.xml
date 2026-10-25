@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="AppTheme.Immersive" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Ensure the activity is fullscreen -->
+        <item name="android:windowFullscreen">true</item>
+        <!-- Allow content to draw into display cutout areas (notches) -->
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="o_mr1">shortEdges</item>
+        <!-- Optional: Set a window background, e.g., transparent or black -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- Hide the system status bar -->
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
+        <!-- Hide the navigation bar -->
+        <item name="android:navigationBarColor" tools:targetApi="l">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="l">true</item>
+    </style>
+
+    <!-- Default Application Theme -->
+    <style name="AppTheme" parent="AppTheme.Immersive" />
+</resources>

@@ -1,0 +1,25 @@
+# Local accounts, bridge token, browser profiles and local interpreter
+tools/bridge-config.json
+tools/provider-session.bin
+tools/provider-browser/
+tools/*-profile/
+tools/python-path.txt
+tools/catalog-cache.json.gz
+tools/*-checks.json
+tools/*-process.json
+tools/new-source-checks.json
+
+# Generated files, historical evidence and user downloads
+App/*.exe
+build/
+Cache/
+downloads/
+backups/
+docs/archive/
+**/__pycache__/
+*.pyc
+*.log
+**/node_modules/
+source/.idea/
+source/src-tauri/target/
+source/src-tauri/gen/

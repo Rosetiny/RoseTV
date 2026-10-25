@@ -1,0 +1,29 @@
+{
+  "name": "rosetv",
+  "version": "1.1.0",
+  "description": "RoseTV 桌面影视播放器",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx tauri dev",
+    "tauri": "tauri",
+    "serve:public": "serve public -l 3000 -s",
+    "build:css": "tailwindcss -i ./public/css/input.css -o ./public/css/styles.css --minify",
+    "test": "node tests/performance.mjs"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
+  },
+  "author": "bestZwei",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@tauri-apps/cli": "2.5.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "serve": "^14.2.4",
+    "tailwindcss": "^4.1.7"
+  }
+}

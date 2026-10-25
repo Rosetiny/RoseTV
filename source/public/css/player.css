@@ -1,0 +1,29 @@
+/* Styles for custom video view mode settings in DPlayer */
+.dplayer-setting-item.dplayer-setting-item-active .dplayer-toggle {
+    /* Ensure the checkmark is visible and styled according to the theme */
+    color: var(--dplayer-theme-color, #00ccff); /* Fallback to default theme color */
+}
+
+.dplayer-setting-item .dplayer-label {
+    /* Ensure labels are clearly visible */
+    color: #fff; /* Or match DPlayer's default label color */
+}
+
+/* Style for the "Vertical Offset" label to make it look like a header/separator */
+.dplayer-setting-item.dplayer-setting-offset-label {
+    padding-top: 5px;
+    padding-bottom: 0px;
+    font-weight: bold;
+    cursor: default; /* Not clickable */
+    opacity: 0.7; /* Slightly dimmer to act as a separator */
+}
+
+.dplayer-setting-item.dplayer-setting-offset-label .dplayer-toggle {
+    display: none; /* Hide toggle for the label itself */
+}
+
+/* Ensure offset items are displayed correctly */
+.dplayer-setting-item.dplayer-setting-video-offset-y {
+    display: flex; /* Default display for items, will be controlled by JS */
+    padding-left: 15px; /* Indent offset options slightly */
+}
